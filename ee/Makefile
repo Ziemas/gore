@@ -16,7 +16,7 @@ EE_LDFLAGS += -L$(PS2DEV)/gsKit/lib -L$(PS2SDK)/ports/lib
 all: $(EE_BIN)
 
 clean:
-	rm -f $(EE_BIN) $(EE_OBJS) romdisk.img
+	rm -f $(EE_BIN) $(EE_OBJS)
 
 run: $(EE_BIN)
 	ps2client execee host:$(EE_BIN)

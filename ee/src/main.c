@@ -1,4 +1,5 @@
 #include <iopcontrol.h>
+#include <loadfile.h>
 #include <sbv_patches.h>
 #include <sifrpc.h>
 #include <stdbool.h>
@@ -19,6 +20,10 @@ main()
 
     SifInitRpc(0);
 
+    SifLoadModule("host:gore.irx", 0, NULL);
+
     while (true)
         ;
+
+    return 0;
 }
