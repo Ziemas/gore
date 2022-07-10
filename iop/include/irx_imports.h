@@ -4,3 +4,4 @@
 
 #include <stdio.h>
 #include <thbase.h>
+#include <loadcore.h>

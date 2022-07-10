@@ -7,10 +7,12 @@
 # Review ps2sdk README & LICENSE files for further details.
 
 EE_BIN = main.elf
-EE_OBJS = src/main.o
-EE_LIBS = -lpatches
-EE_INCS += -I$(PS2DEV)/gsKit/include
+EE_OBJS = src/main.o src/thread.o src/tswitch.o
+EE_LIBS = -lpatches -ldebug
+EE_INCS += -I$(PS2DEV)/gsKit/include -Iinclude
 EE_LDFLAGS += -L$(PS2DEV)/gsKit/lib -L$(PS2SDK)/ports/lib
+EE_ASFLAGS += -msingle-float
+EE_CFLAGS += -Wall -Werror-implicit-function-declaration -Wdeclaration-after-statement
 
 
 all: $(EE_BIN)
