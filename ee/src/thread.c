@@ -4,7 +4,7 @@
 
 extern void gore_task_switch(char *cur_state, char *next_state);
 
-static char kernel_state[0x58];
+static char kernel_state[0x84];
 static struct gore_thread *current_thread;
 
 void
