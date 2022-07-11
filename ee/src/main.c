@@ -42,46 +42,41 @@ main()
 {
 	ee_sema_t vblank_sema = {};
 
+	struct gore_thread *threads[2];
+
 	sbv_patch_enable_lmb();
 	sbv_patch_disable_prefix_check();
 	sbv_patch_fileio();
 
-	SifInitRpc(0);
-
-	while (!SifIopReboot("host:ioprp300.img"))
-		;
-	while (!SifIopSync())
-		;
-
-	SifInitRpc(0);
-
-	SifLoadModule("host:gore.irx", 0, NULL);
-
 	init_scr();
 	scr_clear();
+
+	//SifInitRpc(0);
+
+	//while (!SifIopReboot("host:ioprp300.img"))
+	//	;
+	//while (!SifIopSync())
+	//	;
+
+	//SifInitRpc(0);
+
+	SifLoadModule("host:gore.irx", 0, NULL);
 
 	vblank_sema.init_count = 1;
 	vblank_sema.max_count = 2;
 	vb_sema = CreateSema(&vblank_sema);
 
-	AddIntcHandler(INTC_VBLANK_S, vblank_handler, 0);
-	EnableIntc(INTC_VBLANK_S);
+	AddIntcHandler(INTC_VBLANK_E, vblank_handler, 0);
+	EnableIntc(INTC_VBLANK_E);
 
-	//while (true) {
-	//	WaitSema(vb_sema);
-	//	scr_clear();
-	//	scr_printf("-- GORE EE SERVICE --\n");
-	//	SleepThread();
-	//}
-
-	struct gore_thread *threads[2];
-
-	threads[0] = gore_thread_create(0x800, foo_thread);
-	threads[1] = gore_thread_create(0x800, bar_thread);
+	threads[0] = gore_thread_create(0x900, foo_thread);
+	threads[1] = gore_thread_create(0x900, bar_thread);
 
 	while (true) {
-	    gore_thread_exec(threads[0]);
-	    gore_thread_exec(threads[1]);
+		WaitSema(vb_sema);
+		scr_printf("-- GORE EE SERVICE --\n");
+		gore_thread_exec(threads[0]);
+		gore_thread_exec(threads[1]);
 	}
 
 	return 0;
