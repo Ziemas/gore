@@ -69,12 +69,13 @@ main()
 	AddIntcHandler(INTC_VBLANK_E, vblank_handler, 0);
 	EnableIntc(INTC_VBLANK_E);
 
+	scr_printf("-- GORE EE SERVICE --\n");
+
 	threads[0] = gore_thread_create(0x900, foo_thread);
 	threads[1] = gore_thread_create(0x900, bar_thread);
 
 	while (true) {
 		WaitSema(vb_sema);
-		scr_printf("-- GORE EE SERVICE --\n");
 		gore_thread_exec(threads[0]);
 		gore_thread_exec(threads[1]);
 	}
